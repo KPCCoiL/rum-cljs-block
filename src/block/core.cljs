@@ -11,15 +11,15 @@
 (def height 800)
 (def bar-width (/ width 4))
 (def radius 7)
-(def initial-pos [radius (* height 0.6)])
+(def initial-pos [(inc radius) (* height 0.6)])
 
-(def speed 0.4)
+(def speed 1)
 
 (def game-state
   (atom {:bar-velocity 0
          :bar-x (/ width 2)
          :pos initial-pos
-         :v [0.5 0.5]}))
+         :v [0.7 0.7]}))
 
 (defn v+ [u v]
   (map + u v))
@@ -49,12 +49,12 @@
         :horz
         :vert))))
 
-
 (defn next-frame [{:keys [bar-velocity bar-x pos v] :as state}]
-  (let [new-v (if-let [dir (collide? pos bar-x (- height 30) bar-width 10)]
+  (let [objects [[bar-x (- height 30) bar-width 10] [0 0 width 0] [0 0 0 height] [width 0 0 height]]
+        new-v (if-let [dir (some #(apply collide? pos %) objects)]
                 (case dir
-                  :horz [(- (v 0)) (v 1)]
-                  :vert [(v 0) (- (v 1))])
+                  :horz [(v 0) (- (v 1))]
+                  :vert [(- (v 0)) (v 1)])
                 v)]
     (assoc state
            :bar-x (max
@@ -94,7 +94,7 @@
               :fill "black"}]]
    [:button {:on-click #(swap! game-state assoc
                                :pos initial-pos
-                               :v [0.5 0.5])}
+                               :v [0.7 0.7])}
     "restart"]])
 
 (defn mount [el]
