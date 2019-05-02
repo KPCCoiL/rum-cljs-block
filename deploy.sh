@@ -3,7 +3,7 @@
 git checkout master
 rm -rf target/public
 clojure -A:fig:min
-cp -a resources/public page
+cp -a resources/public/ page
 mkdir page/cljs-out
 cp -a target/public/cljs-out/dev-main.js page/cljs-out/dev-main.js
 
