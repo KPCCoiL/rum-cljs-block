@@ -19,7 +19,7 @@
   (atom {:bar-velocity 0
          :bar-x (/ width 2)
          :pos initial-pos
-         :v [0.7 0.7]}))
+         :v [1 1]}))
 
 (defn v+ [u v]
   (map + u v))
@@ -94,7 +94,7 @@
               :fill "black"}]]
    [:button {:on-click #(swap! game-state assoc
                                :pos initial-pos
-                               :v [0.7 0.7])}
+                               :v [1 1])}
     "restart"]])
 
 (defn mount [el]
@@ -108,7 +108,8 @@
 ;; this is particularly helpful for testing this ns without launching the app
 (mount-app-element)
 
-(js/setInterval #(swap! game-state next-frame) (/ 1000 300))
+(defonce initialize-animation
+  (js/setInterval (swap! game-state next-frame (/ 1000 300))))
 
 ;; specify reload hook with ^;after-load metadata
 (defn ^:after-load on-reload []
